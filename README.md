@@ -1,6 +1,6 @@
 # Movie App
 
-A new Flutter project.
+This application is movie application.
 
 ## Getting Started
 
