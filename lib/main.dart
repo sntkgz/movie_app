@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         ),
         body: Center(
           child: Container(
-            child: Text('sena tokgoz'),
+            child: Text('sena tokgoz2'),
           ),
         ),
       ),
