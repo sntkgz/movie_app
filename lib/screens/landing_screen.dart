@@ -19,13 +19,12 @@ class _LandingScreenState extends State<LandingScreen> {
       body: sayfaListesi[secilenIndexs],
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.looks_one), label: 'home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.looks_two), label: 'profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'profile'),
         ],
         backgroundColor: Colors.blue,
-        selectedItemColor: Colors.red,
-        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white60,
         currentIndex: secilenIndexs,
         onTap: (indexs) {
           setState(() {

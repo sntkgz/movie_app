@@ -6,8 +6,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
-  var sayfaListe =[SayfaBir(),SayfaIki()];
+  // var sayfaListe =[SayfaBir(),SayfaIki()];
 
   int secilenIndeks = 0;
 
@@ -15,15 +14,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(automaticallyImplyLeading: false, title: Text('Profilim')),
-      body: Center(
-        child: Text('Profıl')
+      body: Center(child: Text('Profıl')),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [],
         ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [],
-          ),
-        ),
+      ),
     );
   }
 }
