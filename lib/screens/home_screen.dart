@@ -1,7 +1,9 @@
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/core/const.dart';
 import 'package:my_app/models/movies.dart';
+import 'package:my_app/screens/detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -29,9 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<MovieResponse> filmlerGetir() async {
     var movieResponse;
     try {
-      var response = await Dio().get(moviesUrl);
-      movieResponse = MovieResponse.fromJson(response.data);
-      print(response);
+       var response = await Dio().get(moviesUrl);
+       movieResponse = MovieResponse.fromJson(response.data);
+       print(response);
     } catch (e) {
       print(e);
     }
@@ -63,26 +65,35 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, indeks) {
                 var movie = movieResponse.movies[indeks];
 
-                return Card(
-                  child: Column(
-                    children: [
-                      Expanded(
-                          child: Image.network(
-                        '$baseImageUrl/${movie.backdropPath}',
-                        fit: BoxFit.cover,
-                      )),
-                      Text(
-                        movie.title,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        movie.releaseDate,
-                        style: TextStyle(
-                          fontSize: 14,
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailScreen(movie: movie,)));
+                  },
+                                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.network(
+                          '$baseImageUrl/${movie.backdropPath}',
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                    ],
+                            )),
+                        Text(
+                          movie.title,
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          movie.releaseDate,
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
