@@ -2,6 +2,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/core/const.dart';
+import 'package:my_app/models/film.dart';
 import 'package:my_app/models/movies.dart';
 import 'package:my_app/screens/detail_screen.dart';
 
@@ -67,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 return GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailScreen(movie: movie,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailScreen(film: film,)));
                   },
                                   child: Card(
                     child: Column(

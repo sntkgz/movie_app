@@ -3,8 +3,8 @@ import 'package:my_app/core/const.dart';
 import 'package:my_app/models/movies.dart';
 
 class DetailScreen extends StatefulWidget {
-  Movie movie;
-  DetailScreen({this.movie});
+  final Movie movie ;
+  const DetailScreen({this.movie});
   @override
   _DetailScreenState createState() => _DetailScreenState();
 }

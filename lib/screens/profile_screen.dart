@@ -18,7 +18,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
-          children: [],
+          children: [
+            DrawerHeader(
+              child: Text("BAŞLIK TASARIMI",style: TextStyle(color: Colors.white,fontSize: 30)),
+              decoration: BoxDecoration(
+                color: Colors.blue),
+                
+            ),
+            ListTile(
+              title: Text("FAVORİLERİM"),
+              onTap: (){
+
+              },
+            ),
+            ListTile(
+              title: Text("AJANDAM"),
+              onTap: (){
+                
+              },
+            ),
+          ],
         ),
       ),
     );
