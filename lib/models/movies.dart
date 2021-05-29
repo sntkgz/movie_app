@@ -1,8 +1,8 @@
 class MovieResponse {
-  int page;
-  List<Movie> movies;
-  int totalPages;
-  int totalResults;
+  int? page;
+  List<Movie?>? movies;
+  int? totalPages;
+  int? totalResults;
 
   MovieResponse({this.page, this.movies, this.totalPages, this.totalResults});
 
@@ -11,7 +11,7 @@ class MovieResponse {
     if (json['results'] != null) {
       movies = <Movie>[];
       json['results'].forEach((v) {
-        movies.add(new Movie.fromJson(v));
+        movies?.add(new Movie.fromJson(v));
       });
     }
     totalPages = json['total_pages'];
@@ -22,7 +22,7 @@ class MovieResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['page'] = this.page;
     if (this.movies != null) {
-      data['results'] = this.movies.map((v) => v.toJson()).toList();
+      data['results'] = this.movies?.map((v) => v?.toJson()).toList();
     }
     data['total_pages'] = this.totalPages;
     data['total_results'] = this.totalResults;
@@ -31,20 +31,20 @@ class MovieResponse {
 }
 
 class Movie {
-  bool adult;
-  String backdropPath;
-  List<num> genreIds;
-  num id;
-  String originalLanguage;
-  String originalTitle;
-  String overview;
-  num popularity;
-  String posterPath;
-  String releaseDate;
-  String title;
-  bool video;
-  num voteAverage;
-  num voteCount;
+  bool? adult;
+  String? backdropPath;
+  List<num>? genreIds;
+  num? id;
+  String? originalLanguage;
+  String? originalTitle;
+  String? overview;
+  num? popularity;
+  String? posterPath;
+  String? releaseDate;
+  String? title;
+  bool? video;
+  num? voteAverage;
+  num? voteCount;
 
   Movie(
       {this.adult,

@@ -3,8 +3,8 @@ import 'package:my_app/core/const.dart';
 import 'package:my_app/models/movies.dart';
 
 class DetailScreen extends StatefulWidget {
-  final Movie movie ;
-  const DetailScreen({this.movie});
+  final Movie movie;
+  const DetailScreen({required this.movie});
   @override
   _DetailScreenState createState() => _DetailScreenState();
 }
@@ -14,7 +14,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.movie.title),
+        title: Text(widget.movie.title!),
       ),
       body: Center(
         child: Column(
