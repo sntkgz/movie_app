@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/screens/home_screen.dart';
-import 'package:my_app/screens/profile_screen.dart';
+
+import 'home_screen.dart';
+import 'profile_screen.dart';
 
 class LandingScreen extends StatefulWidget {
   @override

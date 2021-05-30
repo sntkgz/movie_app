@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:my_app/core/const.dart';
-import 'package:my_app/models/movies.dart';
-import 'package:my_app/screens/detail_screen.dart';
+
+import '../core/const.dart';
+import '../models/movies.dart';
+import 'detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

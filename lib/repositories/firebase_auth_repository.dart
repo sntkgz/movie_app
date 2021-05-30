@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:my_app/core/helpers/auth_exception.dart';
-import 'package:my_app/core/services/locator.dart';
-import 'package:my_app/models/user.dart';
-import 'package:my_app/repositories/cloud_firestore_repository.dart';
+
+import '../core/helpers/auth_exception.dart';
+import '../core/services/locator.dart';
+import '../models/user.dart';
+import 'cloud_firestore_repository.dart';
 
 class FirebaseAuthRepository {
   late AuthResultStatus _status;

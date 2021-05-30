@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/core/const.dart';
-import 'package:my_app/screens/login_screen.dart';
-import 'package:my_app/screens/register_screen.dart';
+
+import '../core/const.dart';
+import 'login_screen.dart';
+import 'register_screen.dart';
 
 class WrapperScreen extends StatefulWidget {
   @override

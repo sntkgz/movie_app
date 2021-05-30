@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/core/const.dart';
+
+import '../core/const.dart';
 
 class CustomFormField extends StatefulWidget {
   final String title;

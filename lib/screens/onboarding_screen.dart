@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/core/const.dart';
-import 'package:my_app/cubit/auth_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_app/cubits/auth_cubit.dart';
+
+import '../core/const.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override

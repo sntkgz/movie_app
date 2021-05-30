@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:my_app/repositories/cloud_firestore_repository.dart';
-import 'package:my_app/repositories/firebase_auth_repository.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../repositories/cloud_firestore_repository.dart';
+import '../../repositories/firebase_auth_repository.dart';
 import 'shared_prefs.dart';
 
 GetIt getIt = GetIt.instance;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_app/cubit/auth_cubit.dart';
-import 'package:my_app/screens/wrapper_screen.dart';
+import 'package:my_app/cubits/auth_cubit.dart';
+
+import 'wrapper_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override

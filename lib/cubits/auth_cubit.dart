@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:my_app/core/helpers/auth_exception.dart';
-import 'package:my_app/core/services/shared_prefs.dart';
-import 'package:my_app/cubit/base_cubit.dart';
-import 'package:my_app/models/user.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../core/helpers/auth_exception.dart';
+import '../core/services/shared_prefs.dart';
+import '../models/user.dart';
+import 'base_cubit.dart';
 
 part 'auth_state.dart';
 
@@ -71,7 +72,6 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit {
     await clearLocalStorage();
     emit(AuthUnauthenticated(false));
   }
-
 
   void onboardingDone() {
     sharedPrefs.onboarding = true;

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:my_app/core/const.dart';
-import 'package:my_app/cubit/auth_cubit.dart';
-import 'package:my_app/models/user.dart';
-import 'package:my_app/widgets/custom_form_field.dart';
+import 'package:my_app/cubits/auth_cubit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../core/const.dart';
+import '../models/user.dart';
+import '../widgets/custom_form_field.dart';
 import 'landing_screen.dart';
 
 class RegisterScreen extends StatefulWidget {

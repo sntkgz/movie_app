@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/core/const.dart';
-import 'package:my_app/models/movies.dart';
+
+import '../core/const.dart';
+import '../models/movies.dart';
 
 class DetailScreen extends StatefulWidget {
   final Movie movie;
