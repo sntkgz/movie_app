@@ -1,5 +1,7 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:my_app/cubits/auth_cubit.dart';
 
 import '../core/const.dart';
 import '../models/movies.dart';
@@ -26,11 +28,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final settings = ['Hepsi', 'Aksiyon', 'Korku', 'Eğlence'];
 
-  void handleClick(String value) {
+  Future<void> handleClick(String value) async {
     switch (value) {
-      case 'Logout':
+      case 'Aksiyon':
+        // await context.read<AuthCubit>().getAllMovies();
         break;
-      case 'Settings':
+      case 'Korku':
         break;
     }
   }
