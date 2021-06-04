@@ -28,4 +28,12 @@ class MovieCubit extends Cubit<MovieState> with BaseCubit {
   void allMovies() {
     emit(MovieLoaded(movies));
   }
+
+  void searchByTitle(String title) {
+    final searchMovies = movies
+        .where(
+            (movie) => movie.title!.toLowerCase().contains(title.toLowerCase()))
+        .toList();
+    emit(MovieLoaded(searchMovies));
+  }
 }

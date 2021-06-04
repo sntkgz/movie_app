@@ -32,27 +32,77 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 icon: Icon(Icons.logout_outlined))
           ],
         ),
-        body: Center(child: Text('Profıl')),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                child: Text("BAŞLIK TASARIMI",
-                    style: TextStyle(color: Colors.white, fontSize: 30)),
-                decoration: BoxDecoration(color: Colors.blue),
+        body: SingleChildScrollView(
+            child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 300,
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    radius: 60,
+                  ),
+                  Center(
+                    child: Text('Profil'),
+                  ),
+                  Container(
+                    color: Colors.blue,
+                    child: ListTile(
+                      title: Text('Notlarım'),
+                      trailing: IconButton(
+                          onPressed: () {}, icon: Icon(Icons.arrow_forward)),
+                    ),
+                  )
+                ],
               ),
-              ListTile(
-                title: Text("FAVORİLERİM"),
-                onTap: () {},
+            ),
+            Text('Favori Filmlerim'),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 10,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 2 / 3.5,
               ),
-              ListTile(
-                title: Text("AJANDAM"),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {},
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: 200,
+                            width: 200,
+                          ),
+                        )),
+                        Text(
+                          'movie.title!',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'movie.genre!',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            )
+          ],
+        )),
       ),
     );
   }

@@ -12,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late String movieOption;
+  final searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -79,44 +80,63 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CircularProgressIndicator(),
             );
           } else if (state is MovieLoaded) {
-            return GridView.builder(
-              itemCount: state.movies.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 2 / 3.5,
-              ),
-              itemBuilder: (context, index) {
-                var movie = state.movies[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/movie_detail_screen',
-                        arguments: movie.imdbId);
-                  },
-                  child: Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Expanded(
-                            child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: movieImage(movie.poster),
-                        )),
-                        Text(
-                          movie.title!,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          movie.genre!,
-                          style: TextStyle(
-                            fontSize: 14,
+            return Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  child: TextFormField(
+                    controller: searchController,
+                    onChanged: (value) {
+                      context
+                          .read<MovieCubit>()
+                          .searchByTitle(searchController.text);
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: GridView.builder(
+                    itemCount: state.movies.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 2 / 3.5,
+                    ),
+                    itemBuilder: (context, index) {
+                      var movie = state.movies[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              '/movie_detail_screen',
+                              arguments: movie.imdbId);
+                        },
+                        child: Card(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: movieImage(movie.poster),
+                              )),
+                              Text(
+                                movie.title!,
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                movie.genre!,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             );
           }
           return Container();
