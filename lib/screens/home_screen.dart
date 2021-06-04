@@ -1,11 +1,9 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:my_app/cubits/auth_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_app/core/const.dart';
+import 'package:my_app/widgets/movie_image.dart';
 
-import '../core/const.dart';
-import '../models/movies.dart';
-import 'detail_screen.dart';
+import '../cubit/movie_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -13,29 +11,36 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Future<MovieResponse> filmlerGetir() async {
-    var movieResponse;
-    try {
-      var response = await Dio().get(moviesUrl);
-      movieResponse = MovieResponse.fromJson(response.data);
-      print(response);
-    } catch (e) {
-      print(e);
-    }
-
-    return movieResponse;
+  late String movieOption;
+  @override
+  void initState() {
+    super.initState();
+    context.read<MovieCubit>().getMovies();
+    movieOption = movieOptions.first;
   }
 
-  final settings = ['Hepsi', 'Aksiyon', 'Korku', 'Eğlence'];
-
-  Future<void> handleClick(String value) async {
+  void handleClick(String value) {
     switch (value) {
-      case 'Aksiyon':
-        // await context.read<AuthCubit>().getAllMovies();
+      case 'Hepsi':
+        context.read<MovieCubit>().allMovies();
+        break;
+      case 'Suç':
+        context.read<MovieCubit>().getMoviesByOption('Crime');
         break;
       case 'Korku':
+        context.read<MovieCubit>().getMoviesByOption('Horror');
+        break;
+      case 'Romantik':
+        context.read<MovieCubit>().getMoviesByOption('Romance');
+        break;
+      case 'Biyografi':
+        context.read<MovieCubit>().getMoviesByOption('Biography');
+        break;
+      case 'Dram':
+        context.read<MovieCubit>().getMoviesByOption('Drama');
         break;
     }
+    movieOption = value;
   }
 
   @override
@@ -45,48 +50,47 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         title: Text('Filmler'),
         actions: <Widget>[
-          PopupMenuButton<String>(
-            initialValue: settings.first,
-            onSelected: handleClick,
-            itemBuilder: (BuildContext context) {
-              return settings.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
+          StatefulBuilder(
+            builder: (context, setState) {
+              return PopupMenuButton<String>(
+                initialValue: movieOption,
+                onSelected: (String value) {
+                  setState(() {
+                    handleClick(value);
+                  });
+                },
+                itemBuilder: (BuildContext context) {
+                  return movieOptions.map((String choice) {
+                    return PopupMenuItem<String>(
+                      value: choice,
+                      child: Text(choice),
+                    );
+                  }).toList();
+                },
+              );
             },
           ),
         ],
       ),
-      body: FutureBuilder<MovieResponse>(
-        future: filmlerGetir(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+      body: BlocBuilder<MovieCubit, MovieState>(
+        builder: (context, state) {
+          if (state is MovieLoading) {
             return Center(
               child: CircularProgressIndicator(),
             );
-          }
-          if (snapshot.hasData) {
-            var movieResponse = snapshot.data;
-
+          } else if (state is MovieLoaded) {
             return GridView.builder(
-              itemCount: movieResponse!.movies!.length,
+              itemCount: state.movies.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 2 / 3.5,
               ),
-              itemBuilder: (context, indeks) {
-                var movie = movieResponse.movies![indeks];
-
+              itemBuilder: (context, index) {
+                var movie = state.movies[index];
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailScreen(
-                                  movie: movie!,
-                                )));
+                    Navigator.of(context).pushNamed('/movie_detail_screen',
+                        arguments: movie.imdbId);
                   },
                   child: Card(
                     child: Column(
@@ -95,10 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                             child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Image.network(
-                            '$baseImageUrl/${movie!.backdropPath}',
-                            fit: BoxFit.cover,
-                          ),
+                          child: movieImage(movie.poster),
                         )),
                         Text(
                           movie.title!,
@@ -106,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          movie.releaseDate!,
+                          movie.genre!,
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -117,9 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             );
-          } else {
-            return Center();
           }
+          return Container();
         },
       ),
     );

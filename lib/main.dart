@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_app/cubit/movie_cubit.dart';
 
 import 'core/services/locator.dart';
-import 'cubits/auth_cubit.dart';
+import 'cubit/auth_cubit.dart';
+import 'router/app_router.dart';
 import 'screens/landing_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/splash_screen.dart';
@@ -27,6 +29,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final authCubit = AuthCubit();
+  final appRouter = AppRouter();
 
   @override
   void initState() {
@@ -41,9 +44,11 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: authCubit),
+        BlocProvider(create: (context) => MovieCubit())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        onGenerateRoute: appRouter.onGenerateRoute,
         title: 'Material App',
         home: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {

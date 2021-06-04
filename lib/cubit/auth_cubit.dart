@@ -77,8 +77,4 @@ class AuthCubit extends Cubit<AuthState> with BaseCubit {
     sharedPrefs.onboarding = true;
     emit(AuthUnauthenticated(false));
   }
-
-  Future<void> getAllMovies() async {
-    cloudFirestoreRepository.getAllMovies();
-  }
 }

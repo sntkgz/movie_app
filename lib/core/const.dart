@@ -13,3 +13,4 @@ const kSkinColor = Color(0xffF4F1F1);
 const kBlueColor = Color(0xff00B4E4);
 
 const String kOnboarding = 'onboarding';
+final movieOptions = ['Hepsi', 'Suç', 'Korku', 'Romantik', 'Biyografi', 'Dram'];
