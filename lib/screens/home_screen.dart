@@ -10,23 +10,6 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Material App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: HomeScreen(),
-    );
-  }
-}
-
 class _HomeScreenState extends State<HomeScreen> {
   Future<MovieResponse> filmlerGetir() async {
     var movieResponse;
@@ -41,10 +24,38 @@ class _HomeScreenState extends State<HomeScreen> {
     return movieResponse;
   }
 
+  final settings = ['Hepsi', 'Aksiyon', 'Korku', 'Eğlence'];
+
+  void handleClick(String value) {
+    switch (value) {
+      case 'Logout':
+        break;
+      case 'Settings':
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false, title: Text('Filmler')),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text('Filmler'),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            initialValue: settings.first,
+            onSelected: handleClick,
+            itemBuilder: (BuildContext context) {
+              return settings.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
+      ),
       body: FutureBuilder<MovieResponse>(
         future: filmlerGetir(),
         builder: (context, snapshot) {

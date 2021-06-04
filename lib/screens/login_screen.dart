@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                             },
                             decoration: InputDecoration(
-                              hintText: "Kullanıcı Adı",
+                              hintText: "E-Posta",
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
