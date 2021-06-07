@@ -86,6 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                   child: TextFormField(
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search_outlined),
+                        hintText: 'Search..'),
                     controller: searchController,
                     onChanged: (value) {
                       context
@@ -107,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () {
                           Navigator.of(context).pushNamed(
                               '/movie_detail_screen',
-                              arguments: movie.imdbId);
+                              arguments: movie);
                         },
                         child: Card(
                           child: Column(

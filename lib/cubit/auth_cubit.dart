@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../core/helpers/auth_exception.dart';
 import '../core/services/shared_prefs.dart';
-import '../models/user.dart';
+import '../models/profile.dart';
 import 'base_cubit.dart';
 
 part 'auth_state.dart';

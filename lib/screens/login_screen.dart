@@ -18,6 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode passwordFocustNode = FocusNode();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  bool visibility = false;
   @override
   Widget build(BuildContext context) {
     var ekranBilgisi = MediaQuery.of(context);
@@ -106,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: TextFormField(
                             controller: passwordController,
                             focusNode: passwordFocustNode,
-                            obscureText: true,
+                            obscureText: visibility ? false : true,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Lütfen bir şifre giriniz';
@@ -118,6 +120,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               return null;
                             },
                             decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      visibility = !visibility;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    visibility
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color:
+                                        visibility ? Colors.blue : Colors.grey,
+                                    size: 24,
+                                  )),
                               hintText: "Şifre",
                               filled: true,
                               fillColor: Colors.white,

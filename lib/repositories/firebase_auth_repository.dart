@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../core/helpers/auth_exception.dart';
 import '../core/services/locator.dart';
-import '../models/user.dart';
+import '../models/profile.dart';
 import 'cloud_firestore_repository.dart';
 
 class FirebaseAuthRepository {

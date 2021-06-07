@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_app/cubit/favorite_movie_cubit.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 
@@ -9,6 +10,12 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<FavoriteMovieCubit>().initialFetchFavoriteMovies();
+  }
+
   var sayfaListesi = [HomeScreen(), ProfileScreen()];
 
   int secilenIndexs = 0;

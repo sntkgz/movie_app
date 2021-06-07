@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_app/cubit/favorite_movie_cubit.dart';
 import 'package:my_app/cubit/movie_cubit.dart';
 
 import 'core/services/locator.dart';
@@ -44,7 +45,8 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: authCubit),
-        BlocProvider(create: (context) => MovieCubit())
+        BlocProvider(create: (context) => MovieCubit()),
+        BlocProvider(create: (context) => FavoriteMovieCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

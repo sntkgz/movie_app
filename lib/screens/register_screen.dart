@@ -5,7 +5,7 @@ import 'package:my_app/cubit/auth_cubit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../core/const.dart';
-import '../models/user.dart';
+import '../models/profile.dart';
 import '../widgets/custom_form_field.dart';
 import 'landing_screen.dart';
 
