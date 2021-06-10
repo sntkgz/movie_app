@@ -6,6 +6,7 @@ import 'package:my_app/cubit/favorite_movie_cubit.dart';
 import 'package:my_app/cubit/movie_detail_cubit.dart';
 import 'package:my_app/models/movie.dart';
 import 'package:my_app/screens/movie_detail_screen.dart';
+import 'package:my_app/screens/notes_screen.dart';
 
 import '../screens/splash_screen.dart';
 
@@ -32,7 +33,22 @@ class AppRouter {
           transitionsBuilder: (_, a, __, c) =>
               FadeTransition(opacity: a, child: c),
         );
-
+      case '/notes_screen':
+        return PageRouteBuilder(
+          settings: RouteSettings(name: 'Notes Screen'),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) =>
+                      MovieDetailCubit(context.read<FavoriteMovieCubit>())),
+              BlocProvider(create: (context) => CommentCubit())
+            ],
+            child: NotesScreen(),
+          ),
+          transitionsBuilder: (_, a, __, c) =>
+              FadeTransition(opacity: a, child: c),
+        );
       default:
         return null;
     }

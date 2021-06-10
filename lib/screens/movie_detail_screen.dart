@@ -9,6 +9,7 @@ import 'package:my_app/cubit/favorite_movie_cubit.dart';
 import 'package:my_app/cubit/movie_detail_cubit.dart';
 import 'package:my_app/models/comment.dart';
 import 'package:my_app/models/movie.dart';
+import 'package:my_app/widgets/movie_image.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final Movie movie;
@@ -58,14 +59,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   Stack(
                     children: [
                       Container(
-                        width: size.width,
-                        height: 350,
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: Image.network(
-                          state.movieDetail.poster!,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                          width: size.width,
+                          height: 350,
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: movieDetailImage(state.movieDetail.poster!)),
                       Positioned(
                         top: 0,
                         right: 5,

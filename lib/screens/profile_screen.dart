@@ -67,7 +67,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ProfileItem(
                     icon: Icon(Icons.notes_outlined),
                     title: 'Notlarım',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pushNamed('/notes_screen');
+                    },
                   ),
                 ],
               ),
