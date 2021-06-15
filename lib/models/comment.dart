@@ -1,11 +1,11 @@
-class Comment {
+class Note {
   String? fromId;
   String? fromName;
   String? comment;
   String? dateTime;
   String? docId;
 
-  Comment({
+  Note({
     this.fromId,
     this.fromName,
     this.comment,
@@ -13,7 +13,7 @@ class Comment {
     this.docId,
   });
 
-  Comment.fromJson(Map<String, dynamic> json) {
+  Note.fromJson(Map<String, dynamic> json) {
     fromId = json['fromId'];
     fromName = json['fromName'];
     comment = json['comment'];

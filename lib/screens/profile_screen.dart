@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_app/core/const.dart';
 import 'package:my_app/cubit/auth_cubit.dart';
 import 'package:my_app/cubit/favorite_movie_cubit.dart';
+import 'package:my_app/cubit/watched_movie_cubit.dart';
 import 'package:my_app/widgets/movie_image.dart';
 
 import 'wrapper_screen.dart';
@@ -17,6 +18,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     context.read<FavoriteMovieCubit>().initialFetchFavoriteMovies();
+    context.read<WatchedMovieCubit>().initialFetchWatchedMovies();
   }
 
   @override
@@ -51,7 +53,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 20,
             ),
             Container(
-              height: 250,
               child: Column(
                 children: [
                   CircleAvatar(
@@ -66,9 +67,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   ProfileItem(
                     icon: Icon(Icons.notes_outlined),
-                    title: 'Notlarım',
+                    title: 'İzlenen Filmlerim',
                     onTap: () {
-                      Navigator.of(context).pushNamed('/notes_screen');
+                      Navigator.of(context).pushNamed('/watched_movies_screen');
                     },
                   ),
                 ],

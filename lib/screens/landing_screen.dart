@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_app/cubit/favorite_movie_cubit.dart';
+import 'package:my_app/cubit/watched_movie_cubit.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 
@@ -14,6 +15,7 @@ class _LandingScreenState extends State<LandingScreen> {
   void initState() {
     super.initState();
     context.read<FavoriteMovieCubit>().initialFetchFavoriteMovies();
+    context.read<WatchedMovieCubit>().initialFetchWatchedMovies();
   }
 
   var sayfaListesi = [HomeScreen(), ProfileScreen()];

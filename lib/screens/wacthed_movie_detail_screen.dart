@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:my_app/cubit/note_cubit.dart';
 
 import '../core/const.dart';
-import '../cubit/comment_cubit.dart';
 import '../cubit/favorite_movie_cubit.dart';
 import '../cubit/movie_detail_cubit.dart';
 import '../cubit/watched_movie_cubit.dart';
@@ -13,14 +13,15 @@ import '../models/comment.dart';
 import '../models/movie.dart';
 import '../widgets/movie_image.dart';
 
-class MovieDetailScreen extends StatefulWidget {
+class WatchedMovieDetailScreen extends StatefulWidget {
   final Movie movie;
-  const MovieDetailScreen({required this.movie});
+  const WatchedMovieDetailScreen({required this.movie});
   @override
-  _MovieDetailScreenState createState() => _MovieDetailScreenState();
+  _WatchedMovieDetailScreenState createState() =>
+      _WatchedMovieDetailScreenState();
 }
 
-class _MovieDetailScreenState extends State<MovieDetailScreen> {
+class _WatchedMovieDetailScreenState extends State<WatchedMovieDetailScreen> {
   final commentController = TextEditingController();
   @override
   void initState() {
@@ -28,7 +29,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     context.read<MovieDetailCubit>().getMovieDetail(widget.movie.imdbId!);
     context.read<FavoriteMovieCubit>().initialFetchFavoriteMovies();
     context.read<WatchedMovieCubit>().initialFetchWatchedMovies();
-    context.read<CommentCubit>().fetchComments(widget.movie.imdbId!);
+    context.read<NoteCubit>().fetchNotes(widget.movie.imdbId!);
   }
 
   @override
@@ -271,7 +272,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                               minLines: 2,
                               maxLines: 8,
                               decoration: InputDecoration.collapsed(
-                                  hintText: "Yorum yazınız..."),
+                                  hintText: "Not yazınız..."),
                             ),
                           ),
                         ),
@@ -282,7 +283,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                 const BoxConstraints(minWidth: double.infinity),
                             child: TextButton(
                               onPressed: () async {
-                                await context.read<CommentCubit>().addComment(
+                                await context.read<NoteCubit>().addNote(
                                     Note(
                                       fromId: FirebaseAuth
                                           .instance.currentUser!.uid,
@@ -291,6 +292,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                           .format(DateTime.now()),
                                     ),
                                     widget.movie.imdbId!);
+                                commentController.clear();
                               },
                               style: ButtonStyle(
                                   padding: MaterialStateProperty.all(
@@ -298,7 +300,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                   backgroundColor:
                                       MaterialStateProperty.all(Colors.blue)),
                               child: Text(
-                                'Yorum Yap'.toUpperCase(),
+                                'Gönder'.toUpperCase(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
@@ -308,16 +310,16 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           ),
                         ),
                         Text(
-                          'Yorumlar',
+                          'Notlarınız',
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w500),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        BlocBuilder<CommentCubit, CommentState>(
+                        BlocBuilder<NoteCubit, NoteState>(
                           builder: (context, state) {
-                            if (state is CommentLoading) {
+                            if (state is NoteLoading) {
                               return Container(
                                 decoration: BoxDecoration(
                                     color: Colors.black.withOpacity(0.7),
@@ -327,28 +329,20 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                   color: kBlueColor,
                                 ),
                               );
-                            } else if (state is CommentLoaded) {
+                            } else if (state is NoteLoaded) {
                               return ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
                                 reverse: true,
                                 shrinkWrap: true,
-                                itemCount: state.comments.length,
+                                itemCount: state.notes.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  final comment = state.comments[index];
-                                  final uid =
-                                      FirebaseAuth.instance.currentUser!.uid;
+                                  final note = state.notes[index];
                                   return Container(
-                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    padding: EdgeInsets.symmetric(vertical: 6),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          '${comment.fromName}',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 17),
-                                        ),
                                         SizedBox(
                                           height: 3,
                                         ),
@@ -356,115 +350,153 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              '${comment.comment}',
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 17),
+                                            Expanded(
+                                              child: Text(
+                                                '${note.comment}',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 17),
+                                              ),
                                             ),
-                                            uid == comment.fromId
-                                                ? GestureDetector(
-                                                    onTap: () async {
-                                                      await showDialog(
-                                                        context: context,
-                                                        builder: (_) {
-                                                          return AlertDialog(
-                                                            title: Text(
-                                                                'Yorumu Sil'),
-                                                            content: Text(
-                                                                'Yorumu silmek istediğinizden emin misiniz ?'),
-                                                            actions: [
-                                                              TextButton(
-                                                                child: Text(
-                                                                  'Vazgeç',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                                style: ButtonStyle(
-                                                                    padding: MaterialStateProperty.all(const EdgeInsets
-                                                                            .symmetric(
-                                                                        vertical:
-                                                                            14)),
-                                                                    backgroundColor:
-                                                                        MaterialStateProperty.all(
-                                                                            Colors.green)),
-                                                                onPressed: () {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
+                                            Row(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (_) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                              'Notun Tarihi'),
+                                                          content: Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons.timer,
+                                                                color:
+                                                                    Colors.pink,
                                                               ),
-                                                              TextButton(
-                                                                child: Text(
-                                                                  'Sil',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                                style: ButtonStyle(
-                                                                    padding: MaterialStateProperty.all(const EdgeInsets
-                                                                            .symmetric(
-                                                                        vertical:
-                                                                            14)),
-                                                                    backgroundColor:
-                                                                        MaterialStateProperty.all(
-                                                                            Colors.red)),
-                                                                onPressed:
-                                                                    () async {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                  await context
-                                                                      .read<
-                                                                          CommentCubit>()
-                                                                      .removeComment(
-                                                                          comment,
-                                                                          widget
-                                                                              .movie
-                                                                              .imdbId!);
-                                                                },
-                                                              )
+                                                              SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              Text(
+                                                                  "${note.dateTime}")
                                                             ],
-                                                          );
-                                                        },
-                                                      );
-                                                    },
-                                                    child: Container(
-                                                      child: Icon(
-                                                        Icons.delete_outline,
-                                                        color: Colors.red,
-                                                      ),
+                                                          ),
+                                                          actions: [
+                                                            TextButton(
+                                                              child: Text(
+                                                                'Tamam',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                              style: ButtonStyle(
+                                                                  padding: MaterialStateProperty.all(const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          14)),
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty.all(
+                                                                          Colors
+                                                                              .green)),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    child: Icon(
+                                                      Icons.info,
+                                                      color: Colors.grey,
                                                     ),
-                                                  )
-                                                : SizedBox()
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (_) {
+                                                        return AlertDialog(
+                                                          title:
+                                                              Text('Notu Sil'),
+                                                          content: Text(
+                                                              'Notu silmek istediğinizden emin misiniz ?'),
+                                                          actions: [
+                                                            TextButton(
+                                                              child: Text(
+                                                                'Vazgeç',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                              style: ButtonStyle(
+                                                                  padding: MaterialStateProperty.all(const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          14)),
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty.all(
+                                                                          Colors
+                                                                              .green)),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            ),
+                                                            TextButton(
+                                                              child: Text(
+                                                                'Sil',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                              style: ButtonStyle(
+                                                                  padding: MaterialStateProperty.all(const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          14)),
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty.all(
+                                                                          Colors
+                                                                              .red)),
+                                                              onPressed:
+                                                                  () async {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                                await context
+                                                                    .read<
+                                                                        NoteCubit>()
+                                                                    .removeNote(
+                                                                        note,
+                                                                        widget
+                                                                            .movie
+                                                                            .imdbId!);
+                                                              },
+                                                            )
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    child: Icon(
+                                                      Icons.delete_outline,
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
                                           ],
                                         ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        Container(
-                                          alignment: Alignment.center,
-                                          child: Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.timer,
-                                                    color: Colors.pink,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  Text("${comment.dateTime}")
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        )
                                       ],
                                     ),
                                   );

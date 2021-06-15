@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_app/cubit/favorite_movie_cubit.dart';
 import 'package:my_app/cubit/movie_cubit.dart';
+import 'package:my_app/cubit/watched_movie_cubit.dart';
 
 import 'core/services/locator.dart';
 import 'cubit/auth_cubit.dart';
@@ -47,6 +48,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider.value(value: authCubit),
         BlocProvider(create: (context) => MovieCubit()),
         BlocProvider(create: (context) => FavoriteMovieCubit()),
+        BlocProvider(create: (context) => WatchedMovieCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

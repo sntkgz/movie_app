@@ -16,7 +16,7 @@ class CommentCubit extends Cubit<CommentState> with BaseCubit {
     emit(CommentLoaded(comments));
   }
 
-  Future<void> addComment(Comment comment, String imdbId) async {
+  Future<void> addComment(Note comment, String imdbId) async {
     await cloudFirestoreRepository.addComment(comment, imdbId);
     await Fluttertoast.showToast(
         timeInSecForIosWeb: 2,
@@ -28,7 +28,7 @@ class CommentCubit extends Cubit<CommentState> with BaseCubit {
     await fetchComments(imdbId);
   }
 
-  Future<void> removeComment(Comment comment, String imdbId) async {
+  Future<void> removeComment(Note comment, String imdbId) async {
     await cloudFirestoreRepository.removeComment(comment, imdbId);
     await Fluttertoast.showToast(
         timeInSecForIosWeb: 2,

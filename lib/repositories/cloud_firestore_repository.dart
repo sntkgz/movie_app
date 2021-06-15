@@ -69,8 +69,47 @@ class CloudFirestoreRepository {
     return movies;
   }
 
-  Future<List<Comment>> getComments(String imdbId) async {
-    List<Comment> comments = [];
+  Future<void> addWatchedMovie(Movie movie) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    await firestore
+        .collection('watchedMovies')
+        .doc(uid)
+        .collection('movies')
+        .doc(movie.imdbId)
+        .set(movie.toJson());
+  }
+
+  Future<void> removeWatchedMovie(Movie movie) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    await firestore
+        .collection('watchedMovies')
+        .doc(uid)
+        .collection('movies')
+        .doc(movie.imdbId)
+        .delete();
+  }
+
+  Future<List<Movie>> getWatchedMovies() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    List<Movie> movies = [];
+    final movieSnapshot = await firestore
+        .collection('watchedMovies')
+        .doc(uid)
+        .collection('movies')
+        .get();
+    if (movieSnapshot.size > 0) {
+      movieSnapshot.docs.forEach((movie) {
+        movies.add(Movie.fromJson(movie.data()));
+      });
+    }
+    return movies;
+  }
+
+  Future<List<Note>> getComments(String imdbId) async {
+    List<Note> comments = [];
     final commentsSnapshot = await firestore
         .collection('comments')
         .doc(imdbId)
@@ -78,13 +117,13 @@ class CloudFirestoreRepository {
         .get();
     if (commentsSnapshot.size > 0) {
       commentsSnapshot.docs.forEach((movie) {
-        comments.add(Comment.fromJson(movie.data()));
+        comments.add(Note.fromJson(movie.data()));
       });
     }
     return comments;
   }
 
-  Future<void> addComment(Comment comment, String imdbId) async {
+  Future<void> addComment(Note comment, String imdbId) async {
     final profile = await getProfile();
     var docReference = firestore
         .collection('comments')
@@ -96,12 +135,45 @@ class CloudFirestoreRepository {
     await docReference.set(comment.toJson());
   }
 
-  Future<void> removeComment(Comment comment, String imdbId) async {
+  Future<void> removeComment(Note comment, String imdbId) async {
     await firestore
         .collection('comments')
         .doc(imdbId)
         .collection('comments')
         .doc(comment.docId)
+        .delete();
+  }
+
+  Future<List<Note>> getNotes(String imdbId) async {
+    List<Note> notes = [];
+    final notesSnapshot = await firestore
+        .collection('notes')
+        .doc(imdbId)
+        .collection('notes')
+        .get();
+    if (notesSnapshot.size > 0) {
+      notesSnapshot.docs.forEach((movie) {
+        notes.add(Note.fromJson(movie.data()));
+      });
+    }
+    return notes;
+  }
+
+  Future<void> addNote(Note note, String imdbId) async {
+    final profile = await getProfile();
+    var docReference =
+        firestore.collection('notes').doc(imdbId).collection('notes').doc();
+    note.docId = docReference.id;
+    note.fromName = profile.nickName;
+    await docReference.set(note.toJson());
+  }
+
+  Future<void> removeNote(Note note, String imdbId) async {
+    await firestore
+        .collection('notes')
+        .doc(imdbId)
+        .collection('notes')
+        .doc(note.docId)
         .delete();
   }
 }
