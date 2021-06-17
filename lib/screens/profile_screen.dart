@@ -42,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   context
                       .read<FavoriteMovieCubit>()
                       .emit(FavoriteMovieLoading());
+                  context.read<WatchedMovieCubit>().emit(WatchedMovieLoading());
                 },
                 icon: Icon(Icons.logout_outlined))
           ],
