@@ -135,6 +135,16 @@ class CloudFirestoreRepository {
     await docReference.set(comment.toJson());
   }
 
+  Future<void> updateNote(Note note, String imdbId) async {
+    var docReference = firestore
+        .collection('notes')
+        .doc(imdbId)
+        .collection('notes')
+        .doc(note.docId);
+
+    await docReference.update({'comment': note.comment});
+  }
+
   Future<void> removeComment(Note comment, String imdbId) async {
     await firestore
         .collection('comments')

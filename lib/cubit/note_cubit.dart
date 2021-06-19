@@ -39,4 +39,16 @@ class NoteCubit extends Cubit<NoteState> with BaseCubit {
         msg: 'Notunuz silindi');
     await fetchNotes(imdbId);
   }
+
+  Future<void> updateNote(Note note, String imdbId) async {
+    await cloudFirestoreRepository.updateNote(note, imdbId);
+    await Fluttertoast.showToast(
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 15,
+        gravity: ToastGravity.SNACKBAR,
+        msg: 'Notunuz güncellendi');
+    await fetchNotes(imdbId);
+  }
 }

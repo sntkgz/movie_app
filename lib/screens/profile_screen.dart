@@ -59,26 +59,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   CircleAvatar(
                     backgroundColor: Colors.blue,
                     radius: 60,
+                    backgroundImage: AssetImage('assets/images/Mapp.png'),
                   ),
-                  Center(
-                    child: Text('Profil'),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ProfileItem(
-                    icon: Icon(Icons.notes_outlined),
-                    title: 'İzlenen Filmlerim',
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/watched_movies_screen');
-                    },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: ProfileItem(
+                      icon: Icon(Icons.notes_outlined),
+                      title: 'İzlenen Filmlerim',
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed('/watched_movies_screen');
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
-            Text('Favori Filmlerim'),
+            Text(
+              'Favori Filmlerim',
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w300,
+                  letterSpacing: 0.25),
+            ),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             BlocBuilder<FavoriteMovieCubit, FavoriteMovieState>(
               builder: (context, state) {

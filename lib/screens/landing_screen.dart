@@ -29,8 +29,8 @@ class _LandingScreenState extends State<LandingScreen> {
       body: sayfaListesi[secilenIndexs],
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Ana Sayfa'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         ],
         backgroundColor: Colors.blue,
         selectedItemColor: Colors.white,

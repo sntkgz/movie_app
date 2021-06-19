@@ -23,6 +23,7 @@ class WatchedMovieDetailScreen extends StatefulWidget {
 
 class _WatchedMovieDetailScreenState extends State<WatchedMovieDetailScreen> {
   final commentController = TextEditingController();
+  final editCommentController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -300,7 +301,7 @@ class _WatchedMovieDetailScreenState extends State<WatchedMovieDetailScreen> {
                                   backgroundColor:
                                       MaterialStateProperty.all(Colors.blue)),
                               child: Text(
-                                'Gönder'.toUpperCase(),
+                                'Kaydet'.toUpperCase(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
@@ -362,57 +363,121 @@ class _WatchedMovieDetailScreenState extends State<WatchedMovieDetailScreen> {
                                               children: [
                                                 GestureDetector(
                                                   onTap: () async {
+                                                    editCommentController.text =
+                                                        note.comment!;
                                                     await showDialog(
                                                       context: context,
                                                       builder: (_) {
                                                         return AlertDialog(
                                                           title: Text(
-                                                              'Notun Tarihi'),
-                                                          content: Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.timer,
-                                                                color:
-                                                                    Colors.pink,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 4,
-                                                              ),
-                                                              Text(
-                                                                  "${note.dateTime}")
-                                                            ],
-                                                          ),
-                                                          actions: [
-                                                            TextButton(
-                                                              child: Text(
-                                                                'Tamam',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white),
-                                                              ),
-                                                              style: ButtonStyle(
-                                                                  padding: MaterialStateProperty.all(const EdgeInsets
-                                                                          .symmetric(
-                                                                      vertical:
-                                                                          14)),
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty.all(
-                                                                          Colors
-                                                                              .green)),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
+                                                              'Notu Düzenle'),
+                                                          content: Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        20),
+                                                            height: 300,
+                                                            width:
+                                                                double.infinity,
+                                                            child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    Icon(
+                                                                      Icons
+                                                                          .timer,
+                                                                      color: Colors
+                                                                          .pink,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 4,
+                                                                    ),
+                                                                    Text(
+                                                                        "${note.dateTime}"),
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                                Expanded(
+                                                                  child:
+                                                                      TextField(
+                                                                    focusNode:
+                                                                        FocusNode(),
+                                                                    controller:
+                                                                        editCommentController,
+                                                                    cursorColor:
+                                                                        Colors
+                                                                            .black,
+                                                                    minLines: 2,
+                                                                    maxLines: 8,
+                                                                  ),
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    TextButton(
+                                                                      child:
+                                                                          Text(
+                                                                        'Vazgeç',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white),
+                                                                      ),
+                                                                      style: ButtonStyle(
+                                                                          padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
+                                                                              vertical:
+                                                                                  14)),
+                                                                          backgroundColor:
+                                                                              MaterialStateProperty.all(Colors.blue)),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    TextButton(
+                                                                      child:
+                                                                          Text(
+                                                                        'Kaydet',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white),
+                                                                      ),
+                                                                      style: ButtonStyle(
+                                                                          padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
+                                                                              vertical:
+                                                                                  14)),
+                                                                          backgroundColor:
+                                                                              MaterialStateProperty.all(Colors.green)),
+                                                                      onPressed:
+                                                                          () async {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                        note.comment =
+                                                                            editCommentController.text;
+                                                                        await context.read<NoteCubit>().updateNote(
+                                                                            note,
+                                                                            widget.movie.imdbId!);
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ],
                                                             ),
-                                                          ],
+                                                          ),
                                                         );
                                                       },
                                                     );
                                                   },
                                                   child: Container(
                                                     child: Icon(
-                                                      Icons.info,
+                                                      Icons.edit,
                                                       color: Colors.grey,
                                                     ),
                                                   ),
